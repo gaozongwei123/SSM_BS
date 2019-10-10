@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.gzw.dao.OrderitemDao">
+    <resultMap id="BaseResultMap" type="org.gzw.entity.Orderitem">
+        <id column="orderitemid" jdbcType="INTEGER" property="orderitemid" />
+        <result column="orderid" jdbcType="INTEGER" property="orderid" />
+        <result column="productid" jdbcType="INTEGER" property="productid" />
+        <result column="quantity" jdbcType="INTEGER" property="quantity" />
+        <result column="oitotalprice" jdbcType="DOUBLE" property="oitotalprice" />
+        <result column="mark" jdbcType="VARCHAR" property="mark" />
+        <association property="product" javaType="org.gzw.entity.Product">
+            <id column="product_id" property="product_id"/>
+            <result property="pic" column="pic"/>
+            <result property="market_price" column="market_price"/>
+            <result property="product_add_date" column="product_add_date"/>
+            <result property="discount" column="discount"/>
+            <result property="product_descp" column="product_descp"/>
+        </association>
+        <association property="order" javaType="org.gzw.entity.Order">
+            <id column="orderid"  property="orderid" />
+            <result column="uid"  property="uid" />
+            <result column="shipmentId"  property="shipment_id" />
+            <result column="totalprice"  property="totalprice" />
+            <result column="orderdate"  property="orderdate" />
+            <result column="orderstateid"  property="orderstateid" />
+        </association>
+
+    </resultMap>
+<!--       List<Orderitem> Orderitemfinall();
+
+
+    Orderitem Orderitemfinbyid(int id); -->
+
+<select id="Orderitemfinall" resultMap="BaseResultMap">
+     SELECT o.orderitemid, o.orderid, o.productid, o.quantity,p.product_id,p.product_price,
+p.picdescp,
+p.pic,
+p.market_price,
+p.product_add_date,
+p.discount,
+p.product_descp, o.oitotalprice, o.mark,
+d.orderid,
+d.uid,
+d.shipment_id,
+d.totalprice,
+d.orderdate,
+d.orderstateid
+ from orderitem o , product p , `order` d WHERE o.productid=p.product_id AND d.orderid=o.orderid
+</select>
+
+
+<!--        @Select("select * from Orderitem")
+    List<Orderitem> Orderitemfinall();
+
+    @Select("select * from Orderitem where Orderitemsid=#{Orderitemsid}")
+    Orderitem Orderitemfinbyid(int id);
+-->
+    <select id="Orderitemfinbyid" resultMap="BaseResultMap" parameterType="int">
+   SELECT o.orderitemid, o.orderid, o.productid, o.quantity,p.product_id,p.product_price,
+p.picdescp,
+p.pic,
+p.market_price,
+p.product_add_date,
+p.discount,
+p.product_descp, o.oitotalprice, o.mark,
+d.orderid,
+d.uid,
+d.shipment_id,
+d.totalprice,
+d.orderdate,
+d.orderstateid
+ from orderitem o , product p , `order` d WHERE o.productid=p.product_id AND d.orderid=o.orderid and o.Orderitemsid=#{Orderitemsid}
+</select>
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.gzw.dao.ProductDao">
+    <resultMap id="BaseResultMap" type="org.gzw.entity.Product">
+        <id column="product_id" jdbcType="INTEGER" property="product_id" />
+        <result column="product_price" jdbcType="DOUBLE" property="product_price" />
+        <result column="picdescp" jdbcType="VARCHAR" property="picdescp" />
+        <result column="pic" jdbcType="VARCHAR" property="pic" />
+        <result column="market_price" jdbcType="DOUBLE" property="market_price" />
+        <result column="product_add_date" jdbcType="TIMESTAMP" property="product_add_date" />
+        <result column="discount" jdbcType="DOUBLE" property="discount" />
+        <result column="product_descp" jdbcType="VARCHAR" property="product_descp" />
+        <result column="brand_id" jdbcType="INTEGER" property="brand_id" />
+        <result column="somatotypeid" jdbcType="INTEGER" property="somatotypeid" />
+        <result column="processorid" jdbcType="INTEGER" property="processorid" />
+        <result column="fuselagememoryid" jdbcType="INTEGER" property="fuselagememoryid" />
+        <result column="runningmemoryid" jdbcType="INTEGER" property="runningmemoryid" />
+        <result column="stock" jdbcType="INTEGER" property="stock" />
+        <result column="userid" jdbcType="INTEGER" property="userid" />
+        <result column="product_remark" jdbcType="VARCHAR" property="product_remark" />
+<association property="classifybrand" javaType="org.gzw.entity.Classifybrand">
+    <id column="brand_id" jdbcType="INTEGER" property="brand_id" />
+    <result column="brandname" jdbcType="VARCHAR" property="brandname" />
+    <result column="brandremark" jdbcType="VARCHAR" property="brandremark" />
+</association>
+        <association property="classmemory" javaType="org.gzw.entity.Classmemory">
+            <id column="fuselagememoryid" jdbcType="INTEGER" property="fuselagememoryid" />
+            <result column="memoryidname" jdbcType="VARCHAR" property="memoryidname" />
+        </association>
+        <association property="classprocessor" javaType="org.gzw.entity.Classprocessor">
+            <id column="processorid" jdbcType="INTEGER" property="processorid" />
+            <result column="processorname" jdbcType="VARCHAR" property="processorname" />
+            <result column="processor_remark" jdbcType="VARCHAR" property="processorRemark" />
+        </association>
+        <association property="classrunningmemory" javaType="org.gzw.entity.Classrunningmemory">
+            <id column="runningmemoryid" jdbcType="INTEGER" property="runningmemoryid" />
+            <result column="runningname" jdbcType="VARCHAR" property="runningname" />
+        </association>
+        <association property="classsomatotype" javaType="org.gzw.entity.Classsomatotype">
+            <result column="somatotypename" jdbcType="VARCHAR" property="somatotypename" />
+            <result column="somatotype_remark" jdbcType="VARCHAR" property="somatotype_remark" />
+        </association>
+    </resultMap>
+
+<!--      @Select("SELECT * from product,classifybrand,classsomatotypes,classprocessor,classmemory,classrunningmemory,`user` WHERE product.brand_id =classifybrand.brand_id AND product.somatotypeid=classsomatotypes.somatotypeid AND product.processorid=classprocessor.processorid AND product.runningmemoryid = classrunningmemory.runningmemoryid AND product.userid =`user`.uid")
+    List<Product> Productfinall();
+
+    @Selectmotypes.somatotypeid AND product.processnningmemoemoruid p.product_id=#{product_id}")
+    Product Productfinbyid(int id);
+    -->
+    <select id="Productfinall" resultMap="BaseResultMap">
+SELECT p.product_id, p.product_price, p.picdescp, p.pic, p.market_price, p.product_add_date, p.discount,
+    p.product_descp, p.brand_id, p.somatotypeid, p.processorid, p.fuselagememoryid, p.runningmemoryid,
+    p.stock, p.userid, p.product_remark,i.brand_id, i.brandname, i.brandremark,m.fuselagememoryid, m.memoryidname,r.processorid, r.processorname, r.processor_remark,u.runningmemoryid, u.runningname, a.somatotypeid, a.somatotypename, a.somatotype_remark
+	FROM product p,classifybrand i,classmemory m,classprocessor r,classrunningmemory u,classsomatotypes a WHERE p.brand_id =i.brand_id AND m.fuselagememoryid = p.fuselagememoryid AND r.processorid=p.processorid AND
+		u.runningmemoryid = p.runningmemoryid AND a.somatotypeid =p.somatotypeid
+    </select>
+
+    <select id="Productfinbyid" resultMap="BaseResultMap" parameterType="int">
+        SELECT p.product_id, p.product_price, p.picdescp, p.pic, p.market_price, p.product_add_date, p.discount,
+    p.product_descp, p.brand_id, p.somatotypeid, p.processorid, p.fuselagememoryid, p.runningmemoryid,
+    p.stock, p.userid, p.product_remark,i.brand_id, i.brandname, i.brandremark,m.fuselagememoryid, m.memoryidname,r.processorid, r.processorname, r.processor_remark,u.runningmemoryid, u.runningname, a.somatotypeid, a.somatotypename, a.somatotype_remark
+	FROM product p,classifybrand i,classmemory m,classprocessor r,classrunningmemory u,classsomatotypes a WHERE p.brand_id =i.brand_id AND m.fuselagememoryid = p.fuselagememoryid AND r.processorid=p.processorid AND
+		u.runningmemoryid = p.runningmemoryid AND a.somatotypeid =p.somatotypeid AND p.product_id=#{product_id}
+    </select>
+
+
+
+
+
+
+
+
+</mapper>

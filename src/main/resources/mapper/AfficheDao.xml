@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.gzw.dao.AfficheDao">
+    <!--
+  @Select("")
+    List<Affiche> Affichefinall();
+
+    @Select("SELECT * FROM affiche,admin WHERE affiche.adminid=admin.id AND affiche.afficheid=#{afficheid}")
+    Affiche Affichefinbyid(int id);
+
+    @Insert("INSERT INTO affiche(affichetitle,affichecontents,adminid,mark,mark2)VALUES(#{affichetitle},#{affichecontents},#{adminid},#{mark},#{mark2})")
+    void insertAffiche(Affiche affiche);
+
+    @Update("UPDATE affiche SET affichetitle=#{affichetitle},affichecontents=#{affichecontents},adminid=#{adminid},mark=#{mark},mark2=#{mark2} WHERE afficheid =#{afficheid}")
+    void updateAffiche(Affiche affiche);
+
+    @Delete("DELETE FROM affiche WHERE afficheid=#{afficheid}")
+    void deleAffiche(int id);
+
+
+
+
+    private int afficheid;
+    private String affichetitle;
+    private String affichecontents;
+    private int adminid;
+    private Date affichedate;
+    private String mark;
+    private String mark2;
+    private Admin admin;
+    -->
+    <!--定义Affichefinall中的admin-->
+    <resultMap id="afficheadminmap" type="org.gzw.entity.Affiche">
+        <id property="afficheid" column="afficheid"></id>
+        <result property="affichetitle" column="affichetitle"/>
+        <result property="adminid" column="adminid"/>
+        <result property="affichedate" column="affichedate"/>
+        <result property="mark" column="mark"/>
+        <result property="mark2" column="mark2"/>
+
+
+        <!--一对一的关系映射-->
+        <association property="admin" column="id" javaType="org.gzw.entity.Admin">
+            <id property="id" column="id"/>
+            <result property="name" column="name"></result>
+            <result property="id" column="id"></result>
+            <result property="password" column="password"></result>
+            <result property="roleid" column="roleid"></result>
+            <result property="remark" column="remark"></result>
+            <result property="remark1" column="remark1"></result>
+        </association>
+    </resultMap>
+    <select id="Affichefinall" resultMap="afficheadminmap">
+      			SELECT     af.afficheid, af.affichetitle, af.affichecontents, af.adminid, af.affichedate, af.mark, af.mark2,a.id, a.name, a.password, a.roleid, a.creadate, a.remark, a.remark1
+ from   affiche af LEFT JOIN admin a ON af.adminid=a.id
+    </select>
+
+
+
+    <select id="Affichefinbyid" resultMap="afficheadminmap" parameterType="int">
+        SELECT affiche.*,affiche.afficheid,affiche.affichetitle,affiche.adminid,admin.name from affiche ,admin  WHERE affiche.adminid =admin.id and affiche.afficheid=#{afficheid}
+    </select>
+
+
+
+
+
+
+
+
+
+
+</mapper>

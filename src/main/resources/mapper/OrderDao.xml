@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.gzw.dao.OrderDao">
+    <!--
+
+
+
+
+      @Select("")
+    List<Order> Orderfinall();
+
+    @Select("SELECT * FROM `user`,shipment,`order` WHERE `order`.uid=`user`.uid AND `order`.shipment_id = shipment.shipment_id AND `order`.orderid=#{orderid}")
+    Order Orderfinbyid(int id);
+
+    @Insert("INSERT INTO `order`(uid,shipment_id,totalprice,orderstateid)VALUES(#{uid},#{shipment_id},#{totalprice},#{orderstateid})")
+    void insertOrder(Order Order);
+
+    @Update("UPDATE  `order` SET uid=#{uid},shipment_id=#{shipment_id},totalprice=#{totalprice},orderstateid=#{orderstateid} WHERE orderid=#{orderid}")
+    void updateOrder(Order Order);
+
+    @Delete("DELETE FROM `order` WHERE orderid=#{orderid}")
+    void deleOrder(int id);
+
+
+        private int orderid;
+    private int uid;
+    private int shipment_id;
+    private double totalprice;
+    private Date orderdate;
+    private int orderstateid;
+    private List<User> user;
+    private List<Shipment> shipment;
+
+    -->
+    <!--定义Affichefinall中的admin-->
+
+    <resultMap id="withuserandshipment" type="org.gzw.entity.Order">
+        <id column="orderid"  property="orderid" />
+        <result column="uid"  property="uid" />
+        <result column="shipmentId"  property="shipment_id" />
+        <result column="totalprice"  property="totalprice" />
+        <result column="orderdate"  property="orderdate" />
+        <result column="orderstateid"  property="orderstateid" />
+        <association property="shipment" column="shipment_id"   javaType="org.gzw.entity.Shipment">
+            <!--s.shipment_id,s.addr,s.zipcode,s.receivername,s.receivertel,s.mark-->
+            <id column="shipment_id" property="shipment_id"/>
+            <result column="addr" property="addr"/>
+            <result column="zipcode" property="zipcode"/>
+            <result column="receivername" property="receivername"/>
+            <result column="receivertel" property="receivertel"/>
+            <result column="mark" property="mark"/>
+        </association>
+        <association property="user" column="uid" javaType="org.gzw.entity.User">
+            <!--      uid,u.email,u.uimgs,u.username,u.sex-->
+            <id property="uid" column="uid"/>
+            <result column="email" property="email"/>
+            <result column="uimgs" property="uimgs"/>
+            <result column="username" property="username"/>
+            <result column="sex" property="sex"/>
+        </association>
+    </resultMap>
+
+    <select id="Orderfinall" resultMap="withuserandshipment" >
+select o.orderid, o.uid, o.shipment_id, o.totalprice, o.orderdate, o.orderstateid,o.uid,
+u.email,u.uimgs,u.username,u.sex,s.shipment_id,s.addr,s.zipcode,s.receivername,s.receivertel,s.mark from  `user` u left join `order` o on u.uid=o.uid left join shipment s on s.shipment_id = o.shipment_id
+    </select>
+
+<!--        List<Order> Orderfinall();
+
+
+    Order Orderfinbyid(int id);-->
+
+    <select id="Orderfinbyid" parameterType="int" resultMap="withuserandshipment" >
+select o.orderid, o.uid, o.shipment_id, o.totalprice, o.orderdate, o.orderstateid,o.uid,u.email,u.uimgs,
+u.username,u.sex,s.shipment_id,s.addr,s.zipcode,
+s.receivername,s.receivertel,s.mark from  `user` u , `order` o,
+   shipment s   where u.uid=o.uid and s.shipment_id = o.shipment_id and o.orderid=#{orderid}
+    </select>
+
+
+
+
+
+
+
+</mapper>

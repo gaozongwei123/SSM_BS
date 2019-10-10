@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gzw.dao.FavorlistDao">
+    <resultMap id="BaseResultMap" type="org.gzw.entity.Favorlist">
+        <id column="favorlistid" jdbcType="INTEGER" property="favorlistid" />
+        <result column="userid" jdbcType="INTEGER" property="userid" />
+        <result column="productid" jdbcType="INTEGER" property="productid" />
+        <result column="favordescp" jdbcType="VARCHAR" property="favordescp" />
+        <result column="mark" jdbcType="VARCHAR" property="mark" />
+        <association property="product" javaType="org.gzw.entity.Product">
+            <id column="product_id" property="product_id"/>
+            <result property="pic" column="pic"/>
+            <result property="market_price" column="market_price"/>
+            <result property="product_add_date" column="product_add_date"/>
+            <result property="discount" column="discount"/>
+            <result property="product_descp" column="product_descp"/>
+        </association>
+        <association property="user" javaType="org.gzw.entity.User">
+            <id property="u.uid" column="u.uid"/>
+            <result column="email" property="email"/>
+            <result column="uimgs" property="uimgs"/>
+            <result column="username" property="username"/>
+        </association>
+    </resultMap>
+
+
+
+
+    <select id="Favorlistfinall" resultMap="BaseResultMap">
+SELECT f.favorlistid, f.userid, f.productid, f.favordescp, f.mark,p.product_id,p.product_price,
+p.picdescp,
+p.pic,
+p.market_price,
+p.product_add_date,
+p.discount,
+p.product_descp,u.uid,
+u.email,
+u.uimgs,
+u.username FROM favorlist f,product p,`user` u WHERE f.productid= p.product_id AND f.userid = u.uid
+    </select>
+
+<select id="Favorlistfinbyid" parameterType="int" resultMap="BaseResultMap">
+SELECT f.favorlistid, f.userid, f.productid, f.favordescp, f.mark,p.product_id,p.product_price,
+p.picdescp,
+p.pic,
+p.market_price,
+p.product_add_date,
+p.discount,
+p.product_descp,u.uid,
+u.email,
+u.uimgs,
+u.username FROM favorlist f,product p,`user` u WHERE f.productid= p.product_id AND f.userid = u.uid and f.favorlistid=#{favorlistid}
+</select>
+
+
+
+
+
+</mapper>

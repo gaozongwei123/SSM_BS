@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.gzw.dao.CommentDao">
+
+    <resultMap id="commentsMap" type="org.gzw.entity.Comment">
+            <id property="commentid" column="commentid"></id>
+        <result property="star" column="star"/>
+<!--        u.email,u.uimgs,u.username,u.sex,p.product_id,p.product_price,p.picdescp,p.pic-->
+        <result property="uid" column="uid"/>
+        <result property="productid" column="productid"/>
+        <result property="content" column="content"/>
+        <result property="create_time" column="create_time"/>
+
+        <!--        u.email,u.uimgs,u.username,u.sex,p.product_id,p.product_price,p.picdescp,p.pic-->
+        <association property="user" column="uid" javaType="org.gzw.entity.User">
+            <id property="uid" column="uid"></id>
+            <result property="email" column="email"/>
+            <result property="uimgs" column="uimgs"/>
+            <result property="username" column="username"/>
+            <result property="tel" column="tel"/>
+            <result property="addr" column="addr"/>
+            <result property="remark" column="remark"/>
+        </association>
+        <association property="product" column="product_id" javaType="org.gzw.entity.Product">
+            <id property="product_id" column="product_id"></id>
+            <result property="product_price" column="product_price"/>
+            <result property="picdescp" column="picdescp"/>
+            <result property="pic" column="pic"/>
+        </association>
+    </resultMap>
+
+    <!--
+     @Select("SELECT * FROM `comments`,`user`,product where `user`.uid=`comments`.uid and `comments`.productid=product.product_id")
+    List<Comment> Commentfinall();
+
+    @Select("SELECT * FROM `comments`,`user`,product where `user`.uid=`comments`.uid and `comments`.productid=product.product_id AND `comments`.commentid=#{commentid}")
+    Comment Commentfinbyid(int commentid);
+    -->
+<select id="Commentfinall" resultMap="commentsMap">
+SELECT  c.commentid, c.uid, c.productid, c.star, c.content, c.create_time ,u.uid,c.uid,u.email,u.uimgs,u.username,u.sex,p.product_id,p.product_price,p.picdescp,p.pic
+    FROM comments  c,`user` u,product p  WHERE c.uid=u.uid AND c.productid =p.product_id
+</select>
+
+
+    <select id="Commentfinbyid" parameterType="int" resultMap="commentsMap">
+SELECT
+    c.commentid, c.uid, c.productid, c.star, c.content, c.create_time ,u.uid,c.uid,u.email,u.uimgs,u.username,u.sex,p.product_id,p.product_price,p.picdescp,p.pic FROM comments  c LEFT JOIN `user`  u ON c.uid=u.uid LEFT JOIN product p ON c.productid =p.product_id where c.commentid=#{commentid}
+</select>
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
+

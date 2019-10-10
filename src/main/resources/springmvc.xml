@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:component-scan base-package="org.gzw">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <bean id="internalResourceViewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/X-admin/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--前段控制器，那些资源部拦截-->
+    <!--前端控制器，哪些静态资源不拦截-->
+    <mvc:resources location="/WEB-INF/X-admin/css/" mapping="/css/**"/>
+    <mvc:resources location="/WEB-INF/X-admin/images/" mapping="/images/**"/>
+    <mvc:resources location="/WEB-INF/X-admin/js/" mapping="/js/**"/>
+    <mvc:resources location="/WEB-INF/X-admin/lib/" mapping="/lib/**"/>
+    <mvc:resources location="/WEB-INF/X-admin/fonts/" mapping="/fonts/**"/>
+    <mvc:resources location="/WEB-INF/X-admin/" mapping="/X-admin/**"/>
+    <mvc:annotation-driven/>
+    <mvc:default-servlet-handler/>
+</beans>
